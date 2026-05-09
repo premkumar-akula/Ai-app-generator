@@ -5,7 +5,7 @@ import { ComponentConfig } from '@/types/config';
 import { Loader2, TrendingUp, Users, Calendar, DollarSign, BarChart2, Star, LucideIcon } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-const ICONS: Record<string, LucideIcon> = {
+const ICONS: Record<string, any> = {
   Users, TrendingUp, Calendar, DollarSign, BarChart2, Star,
 };
 
