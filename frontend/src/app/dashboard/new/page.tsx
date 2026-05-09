@@ -70,7 +70,8 @@ const EXAMPLES = [
         {
           id: 'deals', title: 'Deals', path: '/deals',
           components: [{
-            id: 'deals_table', type: 'table', entity: 'deal', searchable: true,
+            id: 'deals_table', type: 'table', entity: 'deal',
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'title', label: 'Deal Title', sortable: true },
               { key: 'value', label: 'Value', render: 'currency' },
@@ -175,7 +176,7 @@ const EXAMPLES = [
           id: 'tasks', title: 'Tasks', path: '/tasks',
           components: [{
             id: 'tasks_table', type: 'table', entity: 'task',
-            searchable: true, exportable: true,
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'title', label: 'Task', sortable: true },
               { key: 'assignee', label: 'Assignee' },
@@ -202,7 +203,8 @@ const EXAMPLES = [
         {
           id: 'team', title: 'Team', path: '/team',
           components: [{
-            id: 'team_table', type: 'table', entity: 'team_member', searchable: true,
+            id: 'team_table', type: 'table', entity: 'team_member',
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'name', label: 'Name', sortable: true },
               { key: 'email', label: 'Email' },
@@ -315,7 +317,7 @@ const EXAMPLES = [
           id: 'suppliers', title: 'Suppliers', path: '/suppliers',
           components: [{
             id: 'suppliers_table', type: 'table', entity: 'supplier',
-            searchable: true, exportable: true,
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'company_name', label: 'Company', sortable: true },
               { key: 'contact_name', label: 'Contact' },
@@ -343,7 +345,7 @@ const EXAMPLES = [
           id: 'orders', title: 'Purchase Orders', path: '/orders',
           components: [{
             id: 'orders_table', type: 'table', entity: 'purchase_order',
-            searchable: true, exportable: true,
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'order_number', label: 'Order #', sortable: true },
               { key: 'product_name', label: 'Product' },
@@ -461,7 +463,7 @@ const EXAMPLES = [
           id: 'leaves', title: 'Leave Requests', path: '/leaves',
           components: [{
             id: 'leaves_table', type: 'table', entity: 'leave_request',
-            searchable: true, exportable: true,
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'employee_name', label: 'Employee', sortable: true },
               { key: 'leave_type', label: 'Type', render: 'badge' },
@@ -491,7 +493,8 @@ const EXAMPLES = [
         {
           id: 'departments', title: 'Departments', path: '/departments',
           components: [{
-            id: 'dept_table', type: 'table', entity: 'department', searchable: true,
+            id: 'dept_table', type: 'table', entity: 'department',
+            searchable: true, exportable: true, importable: true,
             columns: [
               { key: 'name', label: 'Department', sortable: true },
               { key: 'head', label: 'Head' },
