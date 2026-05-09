@@ -63,7 +63,8 @@ function sanitizeField(field: unknown, index: number): FieldConfig | null {
         const o = opt as Record<string, unknown>;
         return {
           label: sanitizeString(o.label || o.name || o.text || o.value, String(o.value || opt)),
-          value: o.value ?? o.id ?? o.key ?? String(opt),
+          // FIX 1: cast to string | number to match FieldConfig options type
+          value: (o.value ?? o.id ?? o.key ?? String(opt)) as string | number,
         };
       }
       return { label: String(opt), value: opt as string };
@@ -318,20 +319,22 @@ export function validateAndSanitizeConfig(raw: unknown): ProcessedConfig {
   // Auth config
   const authRaw = cfg.auth as Record<string, unknown> | undefined;
   const auth = authRaw ? {
-    methods: Array.isArray(authRaw.methods) ? authRaw.methods as string[] : ['email'],
+    // FIX 2: cast methods to the narrow union type required by AuthConfig
+    methods: Array.isArray(authRaw.methods) ? authRaw.methods as ("email" | "github" | "google")[] : ['email' as const],
     roles: Array.isArray(authRaw.roles) ? authRaw.roles as string[] : ['admin', 'user'],
     jwtExpiry: sanitizeString(authRaw.jwtExpiry as string, '7d'),
     emailVerification: sanitizeBoolean(authRaw.emailVerification),
-  } : { methods: ['email'], roles: ['admin', 'user'] };
+  } : { methods: ['email' as const], roles: ['admin', 'user'] };
 
   // Theme
   const themeRaw = cfg.theme as Record<string, unknown> | undefined;
   const theme = themeRaw ? {
     primaryColor: sanitizeString(themeRaw.primaryColor as string, '#6366f1'),
     accentColor: sanitizeString(themeRaw.accentColor as string, '#8b5cf6'),
-    mode: (themeRaw.mode as string) || 'light',
+    // FIX 3: cast mode to the narrow union type required by ThemeConfig
+    mode: (themeRaw.mode as "light" | "dark" | "system" | undefined) || 'light',
     appName: sanitizeString(themeRaw.appName as string, name || 'App'),
-  } : { primaryColor: '#6366f1', accentColor: '#8b5cf6', mode: 'light' };
+  } : { primaryColor: '#6366f1', accentColor: '#8b5cf6', mode: 'light' as const };
 
   // i18n
   const i18nRaw = cfg.i18n as Record<string, unknown> | undefined;
