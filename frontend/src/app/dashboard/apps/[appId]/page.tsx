@@ -11,7 +11,14 @@ interface App {
   id: string;
   name: string;
   config: {
-    pages?: Array<{ id: string; title: string; icon?: string; hidden?: boolean; path: string }>;
+    pages?: Array<{
+      id: string;
+      title: string;
+      icon?: string;
+      hidden?: boolean;
+      path: string;
+      components?: unknown[];
+    }>;
     theme?: { primaryColor?: string; mode?: string; appName?: string };
     i18n?: { defaultLocale?: string; supportedLocales?: string[] };
   };
@@ -95,7 +102,8 @@ export default function AppPage() {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto bg-gray-50">
           {currentPage ? (
-            <AppRuntime appId={appId} page={currentPage} config={app.config} locale={locale} />
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <AppRuntime appId={appId} page={currentPage as any} config={app.config} locale={locale} />
           ) : (
             <div className="flex items-center justify-center h-full">
               <p className="text-gray-400">No pages configured</p>
