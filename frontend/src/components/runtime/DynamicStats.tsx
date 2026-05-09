@@ -2,10 +2,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { dataApi } from '@/lib/api';
 import { ComponentConfig } from '@/types/config';
-import { Loader2, TrendingUp, Users, Calendar, DollarSign, BarChart2, Star } from 'lucide-react';
+import { Loader2, TrendingUp, Users, Calendar, DollarSign, BarChart2, Star, LucideIcon } from 'lucide-react';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 
-const ICONS: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+const ICONS: Record<string, LucideIcon> = {
   Users, TrendingUp, Calendar, DollarSign, BarChart2, Star,
 };
 
