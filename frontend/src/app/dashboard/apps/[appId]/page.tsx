@@ -103,7 +103,7 @@ export default function AppPage() {
         <main className="flex-1 overflow-y-auto bg-gray-50">
           {currentPage ? (
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            <AppRuntime appId={appId} page={currentPage as any} config={app.config} locale={locale} />
+            <AppRuntime appId={appId} page={currentPage as any} config={app.config as any} locale={locale} />
           ) : (
             <div className="flex items-center justify-center h-full">
               <p className="text-gray-400">No pages configured</p>
