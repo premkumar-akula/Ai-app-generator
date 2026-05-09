@@ -1,0 +1,212 @@
+{
+  "name": "Project Manager",
+  "description": "Track projects, tasks, and team members",
+  "theme": {
+    "primaryColor": "#0ea5e9",
+    "mode": "light",
+    "appName": "ProjectHub"
+  },
+  "auth": {
+    "methods": ["email"],
+    "roles": ["admin", "manager", "member"]
+  },
+  "i18n": {
+    "defaultLocale": "en",
+    "supportedLocales": ["en", "es"],
+    "translations": {
+      "es": {
+        "Projects": "Proyectos",
+        "Tasks": "Tareas",
+        "Team": "Equipo",
+        "Dashboard": "Panel"
+      }
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "events": [
+      { "trigger": "task.created", "channels": ["in-app"], "template": "New task created" },
+      { "trigger": "project.completed", "channels": ["in-app", "email"] }
+    ]
+  },
+  "entities": [
+    {
+      "name": "project",
+      "fields": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "description", "type": "text" },
+        { "name": "status", "type": "string", "default": "active" },
+        { "name": "start_date", "type": "date" },
+        { "name": "end_date", "type": "date" },
+        { "name": "budget", "type": "float" },
+        { "name": "priority", "type": "string", "default": "medium" }
+      ],
+      "timestamps": true,
+      "userScoped": true
+    },
+    {
+      "name": "task",
+      "fields": [
+        { "name": "title", "type": "string", "required": true },
+        { "name": "description", "type": "text" },
+        { "name": "status", "type": "string", "default": "todo" },
+        { "name": "priority", "type": "string", "default": "normal" },
+        { "name": "due_date", "type": "date" },
+        { "name": "assignee", "type": "string" },
+        { "name": "estimated_hours", "type": "float" }
+      ],
+      "timestamps": true
+    },
+    {
+      "name": "team_member",
+      "tableName": "team_members",
+      "fields": [
+        { "name": "name", "type": "string", "required": true },
+        { "name": "email", "type": "string", "unique": true },
+        { "name": "role", "type": "string" },
+        { "name": "department", "type": "string" },
+        { "name": "avatar_url", "type": "string" },
+        { "name": "is_active", "type": "boolean", "default": true }
+      ],
+      "timestamps": true
+    }
+  ],
+  "pages": [
+    {
+      "id": "dashboard",
+      "title": "Dashboard",
+      "path": "/",
+      "icon": "LayoutDashboard",
+      "components": [
+        {
+          "id": "project_stats",
+          "type": "stats",
+          "entity": "project",
+          "stats": [
+            { "label": "Total Projects", "key": "total", "icon": "BarChart2", "color": "blue" },
+            { "label": "Added Today", "key": "today", "icon": "TrendingUp", "color": "green" },
+            { "label": "This Week", "key": "thisWeek", "icon": "Calendar", "color": "purple" }
+          ]
+        },
+        {
+          "id": "task_stats",
+          "type": "stats",
+          "entity": "task",
+          "stats": [
+            { "label": "Total Tasks", "key": "total", "icon": "Users", "color": "yellow" },
+            { "label": "New Tasks Today", "key": "today", "icon": "Star", "color": "red" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "title": "Projects",
+      "path": "/projects",
+      "icon": "Folder",
+      "components": [
+        {
+          "id": "projects_table",
+          "type": "table",
+          "entity": "project",
+          "searchable": true,
+          "exportable": true,
+          "importable": true,
+          "columns": [
+            { "key": "name", "label": "Project Name", "sortable": true },
+            { "key": "status", "label": "Status", "render": "badge" },
+            { "key": "priority", "label": "Priority", "render": "badge" },
+            { "key": "start_date", "label": "Start", "render": "date" },
+            { "key": "end_date", "label": "Deadline", "render": "date", "sortable": true },
+            { "key": "budget", "label": "Budget", "render": "currency" }
+          ],
+          "actions": [
+            { "name": "create", "label": "New Project", "method": "POST", "variant": "primary" },
+            { "name": "edit", "label": "Edit", "method": "PUT", "variant": "secondary" },
+            { "name": "delete", "label": "Delete", "method": "DELETE", "variant": "danger", "confirm": "Delete this project?" }
+          ],
+          "fields": [
+            { "name": "name", "label": "Project Name", "type": "text", "required": true },
+            { "name": "description", "label": "Description", "type": "textarea" },
+            { "name": "status", "label": "Status", "type": "select", "options": ["active", "on_hold", "completed", "cancelled"] },
+            { "name": "priority", "label": "Priority", "type": "select", "options": ["low", "medium", "high", "critical"] },
+            { "name": "start_date", "label": "Start Date", "type": "date" },
+            { "name": "end_date", "label": "End Date", "type": "date" },
+            { "name": "budget", "label": "Budget ($)", "type": "currency" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tasks",
+      "title": "Tasks",
+      "path": "/tasks",
+      "icon": "CheckSquare",
+      "components": [
+        {
+          "id": "tasks_table",
+          "type": "table",
+          "entity": "task",
+          "searchable": true,
+          "exportable": true,
+          "columns": [
+            { "key": "title", "label": "Task", "sortable": true },
+            { "key": "assignee", "label": "Assignee" },
+            { "key": "status", "label": "Status", "render": "badge" },
+            { "key": "priority", "label": "Priority", "render": "badge" },
+            { "key": "due_date", "label": "Due Date", "render": "date", "sortable": true },
+            { "key": "estimated_hours", "label": "Est. Hours" }
+          ],
+          "actions": [
+            { "name": "create", "label": "Add Task", "method": "POST", "variant": "primary" },
+            { "name": "edit", "label": "Edit", "method": "PUT", "variant": "secondary" },
+            { "name": "delete", "label": "Delete", "method": "DELETE", "variant": "danger" }
+          ],
+          "fields": [
+            { "name": "title", "label": "Title", "type": "text", "required": true },
+            { "name": "description", "label": "Description", "type": "textarea" },
+            { "name": "status", "label": "Status", "type": "select", "options": ["todo", "in_progress", "review", "done", "blocked"] },
+            { "name": "priority", "label": "Priority", "type": "select", "options": ["low", "normal", "high", "urgent"] },
+            { "name": "assignee", "label": "Assignee", "type": "text" },
+            { "name": "due_date", "label": "Due Date", "type": "date" },
+            { "name": "estimated_hours", "label": "Estimated Hours", "type": "number" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "team",
+      "title": "Team",
+      "path": "/team",
+      "icon": "Users",
+      "components": [
+        {
+          "id": "team_table",
+          "type": "table",
+          "entity": "team_member",
+          "searchable": true,
+          "exportable": true,
+          "columns": [
+            { "key": "name", "label": "Name", "sortable": true },
+            { "key": "email", "label": "Email" },
+            { "key": "role", "label": "Role", "render": "badge" },
+            { "key": "department", "label": "Department" },
+            { "key": "is_active", "label": "Active", "render": "boolean" }
+          ],
+          "actions": [
+            { "name": "create", "label": "Add Member", "method": "POST", "variant": "primary" },
+            { "name": "edit", "label": "Edit", "method": "PUT", "variant": "secondary" },
+            { "name": "delete", "label": "Remove", "method": "DELETE", "variant": "danger", "confirm": "Remove this team member?" }
+          ],
+          "fields": [
+            { "name": "name", "label": "Full Name", "type": "text", "required": true },
+            { "name": "email", "label": "Email", "type": "email" },
+            { "name": "role", "label": "Role", "type": "select", "options": ["admin", "manager", "developer", "designer", "qa"] },
+            { "name": "department", "label": "Department", "type": "text" },
+            { "name": "is_active", "label": "Active", "type": "boolean" }
+          ]
+        }
+      ]
+    }
+  ]
+}

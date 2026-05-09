@@ -1,0 +1,1 @@
+export { DynamicChart } from './DynamicStats';

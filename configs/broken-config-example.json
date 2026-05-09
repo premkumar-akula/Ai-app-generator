@@ -1,0 +1,35 @@
+{
+  "appName": "Inventory System",
+  "models": [
+    {
+      "model": "product",
+      "fields": [
+        { "key": "ProductName", "type": "varchar", "required": true },
+        { "name": "qty", "type": "int" },
+        { "name": "price", "type": "decimal" },
+        { "name": "category" },
+        { "name": "is_available", "type": "bool", "default": true }
+      ],
+      "addTimestamps": true
+    }
+  ],
+  "screens": [
+    {
+      "key": "products",
+      "name": "Products",
+      "route": "products",
+      "components": [
+        {
+          "type": "TABLE",
+          "model": "product",
+          "UnknownProperty": "this is ignored safely",
+          "actions": [
+            { "id": "add", "text": "Add Product", "type": "primary" },
+            { "name": "edit", "label": "Edit", "method": "PUT" },
+            { "name": "delete", "label": "Remove", "method": "DELETE", "confirm": "Sure?" }
+          ]
+        }
+      ]
+    }
+  ]
+}
